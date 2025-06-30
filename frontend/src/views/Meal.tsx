@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 // import { getMeals } from "../services/mealsService";
 // import MealCard from "../components/MealCard";
 
-export default function Meals() {
-  const [meals, setMeals] = useState([]);
-
-  useEffect(() => {
-    // getMeals().then(setMeals);
-  }, []);
+const Meal = () => {
+  useEffect(() => {}, []);
 
   return (
-    <div className="meals">
+    <div>
       MEALS PAGE
       {/* {meals.map((meal) => (
         <MealCard key={meal.id} meal={meal} />
       ))} */}
     </div>
   );
-}
+};
+
+export default Meal;
