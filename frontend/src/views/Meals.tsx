@@ -180,9 +180,9 @@ const Meals = ({
                       )}
                     </h2>
                     <RectAddMealButton
-                      onClick={() => navigate("/meals/add")}
-                      label="Add Meal"
-                    />
+  onClick={() => navigate("/meals/add", { state: { date } })}
+  label="Add Meal"
+/>
                   </div>
                   <div className={isScrollable ? "relative" : undefined}>
                     <div

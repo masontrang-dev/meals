@@ -4,14 +4,14 @@ import { type Recipe } from "./AllRecipesFilter";
 
 interface RecipeModalProps {
   recipe: Recipe;
-
   onClose: () => void;
+  date?: string;
 }
 
 const RecipeModal: React.FC<RecipeModalProps> = ({
   recipe,
-
   onClose,
+  date,
 }) => {
   return (
     <div
@@ -85,16 +85,24 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
             <div className="text-sm text-gray-700">{recipe.notes}</div>
           </div>
         )}
-        {/* <button
-          className={`mt-4 w-full py-2 rounded font-semibold transition ${
-            isSelected
-              ? "bg-green-500 text-white"
-              : "bg-blue-500 text-white hover:bg-blue-600"
-          }`}
-          onClick={() => onToggleSelect(recipe.id)}
-        >
-          {isSelected ? "Remove from Meal" : "Add to Meal"}
-        </button> */}
+        {date && (
+          <Button
+            className="mt-4 w-full py-2 rounded font-semibold bg-blue-500 text-white hover:bg-blue-600"
+            onClick={async () => {
+              await fetch("/api/meals/add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  date,
+                  recipeId: recipe.id,
+                }),
+              });
+              onClose();
+            }}
+          >
+            Add Meal
+          </Button>
+        )}
       </div>
     </div>
   );

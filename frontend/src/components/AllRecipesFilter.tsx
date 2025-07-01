@@ -33,7 +33,11 @@ const sortOptions = [
 const cuisineTypes = ["American", "Italian", "Asian", "Mexican", "French"];
 const mealTypes = ["Breakfast", "Lunch", "Dinner", "Snack"];
 
-const AllRecipesFilter: React.FC = () => {
+interface AllRecipesFilterProps {
+  date?: string;
+}
+
+const AllRecipesFilter: React.FC<AllRecipesFilterProps> = ({ date }) => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -160,6 +164,7 @@ const AllRecipesFilter: React.FC = () => {
       <RecipeModal
         recipe={modalRecipe}
         onClose={() => setModalRecipe(null)}
+        date={date}
       />
     )}
   </div>
