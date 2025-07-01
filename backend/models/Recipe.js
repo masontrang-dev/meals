@@ -13,7 +13,7 @@ const RecipeSchema = new mongoose.Schema({
   image: String,
   description: String,
   calories: Number,
-  popularity: Number,
+  popularity: { type: Number, default: 0 },
   cuisine: String,
   mealType: String,
   tags: [String],
@@ -21,7 +21,7 @@ const RecipeSchema = new mongoose.Schema({
   instructions: [String],
   notes: String,
   rating: Number,
-  popularity: Number,
+  dateAdded: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Recipe", RecipeSchema);

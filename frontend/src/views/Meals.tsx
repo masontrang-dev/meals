@@ -33,15 +33,21 @@ function formatDate(date: Date) {
 
 const Meals = () => {
   const [mealsByDate, setMealsByDate] = useState<Record<string, Meal[]>>({});
+  // const [centerDate, setCenterDate] = useState<Date>(new Date()); // Dynamic today
+  const [centerDate, setCenterDate] = useState<Date>(
+    new Date("2025-06-30T00:00:00.000Z")
+  ); // Hardcoded today for development
   const [dates, setDates] = useState<Date[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const today = new Date();
-    const range = getDateRange(today, 2, 5);
+    const range = getDateRange(centerDate, 2, 5);
     setDates(range);
+  }, [centerDate]);
+
+  useEffect(() => {
     setLoading(true);
     setError(null);
     fetch("/api/meals")
@@ -63,9 +69,48 @@ const Meals = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const handlePrev = () => {
+    setCenterDate((prev) => {
+      const d = new Date(prev);
+      d.setDate(prev.getDate() - 1);
+      return d;
+    });
+  };
+  const handleNext = () => {
+    setCenterDate((prev) => {
+      const d = new Date(prev);
+      d.setDate(prev.getDate() + 1);
+      return d;
+    });
+  };
+
   return (
     <div className="p-4 sm:p-6">
       <h1 className="text-2xl font-bold mb-6">Meal Planner</h1>
+      <div className="flex justify-center gap-4 mb-6">
+        <button
+          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
+          onClick={handlePrev}
+          aria-label="Previous Day"
+        >
+          &uarr; Previous
+        </button>
+        <button
+          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
+          onClick={() => setCenterDate(new Date())}
+          aria-label="Today"
+          disabled={centerDate.toDateString() === new Date().toDateString()}
+        >
+          Today
+        </button>
+        <button
+          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
+          onClick={handleNext}
+          aria-label="Next Day"
+        >
+          Next &darr;
+        </button>
+      </div>
       {loading ? (
         <div>Loading meals...</div>
       ) : error ? (

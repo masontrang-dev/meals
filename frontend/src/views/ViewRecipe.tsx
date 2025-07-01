@@ -108,6 +108,18 @@ const ViewRecipe = () => {
           <span className="font-semibold">Rating: </span>
           <span>{data.rating} / 5</span>
         </div>
+      )}{" "}
+      {data.popularity && (
+        <div className="mb-4">
+          <span className="font-semibold">Popularity: </span>
+          <span>{data.popularity} </span>
+        </div>
+      )}
+      {data.dateAdded && (
+        <div className="mb-4">
+          <span className="font-semibold">Date Added: </span>
+          <span>{new Date(data.dateAdded).toLocaleDateString()}</span>
+        </div>
       )}
       <button
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-semibold"

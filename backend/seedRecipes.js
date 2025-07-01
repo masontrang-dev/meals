@@ -4,6 +4,7 @@
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
+// Add dateAdded to each recipe
 const recipes = [
   {
     title: "Grilled Chicken Salad",
@@ -74,7 +75,10 @@ const recipes = [
     notes: "Add chili flakes or a poached egg for extra flavor.",
     rating: 4.2,
   },
-];
+].map((r) => ({
+  ...r,
+  dateAdded: r.dateAdded || new Date(),
+}));
 
 async function seed() {
   for (const recipe of recipes) {
