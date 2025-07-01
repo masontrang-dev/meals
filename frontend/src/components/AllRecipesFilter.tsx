@@ -4,6 +4,8 @@ import RecipeCard from "./RecipeCard";
 import { type Recipe } from "./AllRecipes";
 import SearchInput from "./SearchInput";
 import SortSelect from "./SortSelect";
+import { useLocation } from "react-router-dom";
+import RecipeModal from "./RecipeModal";
 
 const sortOptions = [
   { value: "title", label: "Title (A-Z)" },
@@ -23,6 +25,8 @@ const AllRecipesFilter: React.FC = () => {
   const [sort, setSort] = useState("title");
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
   const [selectedMealTypes, setSelectedMealTypes] = useState<string[]>([]);
+  const location = useLocation();
+  const [modalRecipe, setModalRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -94,7 +98,18 @@ const AllRecipesFilter: React.FC = () => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
         {sorted.map((recipe) => (
-          <div key={recipe.id} style={{ position: "relative" }}>
+          <div
+            key={recipe.id}
+            style={{ position: "relative" }}
+            onClick={() => {
+              if (location.pathname === "/meals/add") {
+                setModalRecipe(recipe);
+              } else {
+                window.location.href = `/recipes/${recipe.id}`;
+              }
+            }}
+            className="cursor-pointer"
+          >
             <RecipeCard
               id={recipe.id.toString()}
               image={recipe.image}
@@ -105,6 +120,12 @@ const AllRecipesFilter: React.FC = () => {
           </div>
         ))}
       </div>
+      {modalRecipe && (
+        <RecipeModal
+          recipe={modalRecipe}
+          onClose={() => setModalRecipe(null)}
+        />
+      )}
     </div>
   );
 };

@@ -3,20 +3,26 @@ import { type Recipe } from "./AllRecipes";
 
 interface RecipeModalProps {
   recipe: Recipe;
-  isSelected: boolean;
+
   onClose: () => void;
-  onToggleSelect: (id: number) => void;
 }
 
 const RecipeModal: React.FC<RecipeModalProps> = ({
   recipe,
-  isSelected,
+
   onClose,
-  onToggleSelect,
 }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl"
           onClick={onClose}
@@ -48,9 +54,17 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
           <div className="mb-2">
             <div className="font-semibold text-sm mb-1">Ingredients:</div>
             <ul className="list-disc list-inside text-sm text-gray-700">
-              {recipe.ingredients.map((ing, i) => (
-                <li key={i}>{ing}</li>
-              ))}
+              {recipe.ingredients.map((ing: any, i: number) => {
+                if (typeof ing === "string") return <li key={i}>{ing}</li>;
+                const name = ing.name || "";
+                const amount = ing.amount ? ` (${ing.amount})` : "";
+                return (
+                  <li key={i}>
+                    {name}
+                    {amount}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}
@@ -70,7 +84,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
             <div className="text-sm text-gray-700">{recipe.notes}</div>
           </div>
         )}
-        <button
+        {/* <button
           className={`mt-4 w-full py-2 rounded font-semibold transition ${
             isSelected
               ? "bg-green-500 text-white"
@@ -79,7 +93,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
           onClick={() => onToggleSelect(recipe.id)}
         >
           {isSelected ? "Remove from Meal" : "Add to Meal"}
-        </button>
+        </button> */}
       </div>
     </div>
   );
