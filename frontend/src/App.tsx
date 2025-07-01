@@ -1,12 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Recipes from "./views/Recipes";
-
 import NotFound from "./views/NotFound";
 import Home from "./views/Home";
 import MainLayout from "./layout/MainLayout";
-import Meals from "./views/Meals";
+import MealsNavLayout from "./MealsNavLayout";
 import Meal from "./views/Meal";
-
 import ViewRecipe from "./views/ViewRecipe";
 import EditRecipe from "./views/EditRecipe";
 import EditMeal from "./views/EditMeal";
@@ -17,9 +15,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Top-level Meals route with context and layout */}
+        <Route path="meals" element={<MealsNavLayout />} />
+        {/* All other routes use MainLayout */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="meals" element={<Meals />} />
           <Route path="meals/add" element={<AddMeal />} />
           <Route path="meals/:id/edit" element={<EditMeal />} />
           <Route path="meals/:id" element={<ViewMeal />} />
