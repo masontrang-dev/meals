@@ -29,7 +29,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const touch = isTouchDevice();
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (touch && expanded) {
