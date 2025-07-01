@@ -19,6 +19,8 @@ const colorMap = {
   },
 };
 
+import { Button } from "@/components/ui/button";
+
 const ToggleFilter: React.FC<ToggleFilterProps> = ({
   options,
   selected,
@@ -29,18 +31,14 @@ const ToggleFilter: React.FC<ToggleFilterProps> = ({
   <div className="flex flex-wrap gap-2 mt-2 items-center">
     {label && <span className="mr-2 font-medium text-sm">{label}:</span>}
     {options.map((option) => (
-      <button
+      <Button
         key={option}
         type="button"
-        className={`px-3 py-1 rounded-full border text-xs font-semibold transition ${
-          selected.includes(option)
-            ? colorMap[color].selected
-            : colorMap[color].unselected
-        }`}
         onClick={() => onToggle(option)}
+        variant="secondary"
       >
         {option.charAt(0).toUpperCase() + option.slice(1)}
-      </button>
+      </Button>
     ))}
   </div>
 );

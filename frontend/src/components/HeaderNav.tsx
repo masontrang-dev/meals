@@ -7,7 +7,7 @@ export default function HeaderNav() {
   const navigate = useNavigate();
   const { jumpToToday } = useMealsNav();
 
-  const showBack = location.pathname !== "/";
+  const showBack = location.pathname !== "/" && location.pathname !== "/recipes" && location.pathname !== "/meals";
   const isRecipes = location.pathname.startsWith("/recipes");
   const isMeals = location.pathname === "/meals";
 

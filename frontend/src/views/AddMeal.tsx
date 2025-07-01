@@ -1,4 +1,4 @@
-import { AllRecipesFilter } from "../components/AllRecipes";
+import  AllRecipesFilter  from "../components/AllRecipesFilter";
 
 const AddMeal = () => {
   return (

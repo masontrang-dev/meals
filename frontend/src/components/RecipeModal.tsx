@@ -1,5 +1,6 @@
 import React from "react";
-import { type Recipe } from "./AllRecipes";
+import { Button } from "@/components/ui/button";
+import { type Recipe } from "./AllRecipesFilter";
 
 interface RecipeModalProps {
   recipe: Recipe;
@@ -23,13 +24,13 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
         className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl"
+        <Button
           onClick={onClose}
           aria-label="Close"
+          variant="secondary"
         >
           ×
-        </button>
+        </Button>
         <img
           src={recipe.image}
           alt={recipe.title}

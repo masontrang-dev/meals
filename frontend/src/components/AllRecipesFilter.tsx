@@ -1,17 +1,26 @@
 import { useState, useEffect } from "react";
-import ToggleFilter from "./ToggleFilter";
+
 import RecipeCard from "./RecipeCard";
-import { type Recipe } from "./AllRecipes";
+
 import SearchInput from "./SearchInput";
-import SortSelect from "./SortSelect";
 import { useLocation } from "react-router-dom";
 import RecipeModal from "./RecipeModal";
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerClose,
-} from "@/components/ui/drawer";
+import FilterDrawer from "./FilterDrawer";
+import SortDrawer from "./SortDrawer";
+
+export interface Recipe {
+  ingredients: [{name: string, amount: string}];
+  instructions: string[];
+  notes: any;
+  id: string;
+  image: string;
+  title: string;
+  description?: string;
+  calories?: number;
+  cuisine?: string;
+  mealType?: string;
+  popularity?: number;
+}
 
 const sortOptions = [
   { value: "title", label: "Title (A-Z)" },
@@ -90,165 +99,64 @@ const AllRecipesFilter: React.FC = () => {
         />
       </form>
       {/* Toggle Bar */}
-      <div className="flex flex-wrap gap-2 justify-end mb-2">
-        <button
-          className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-sm border border-gray-200 transition-colors ${
-            sortOpen ? "ring-2 ring-blue-400" : ""
-          }`}
-          onClick={() => setSortOpen((v) => !v)}
-          aria-label={sortOpen ? "Hide sort" : "Show sort"}
+      <div className="flex flex-wrap gap-2 justify-start mb-2">
+        <FilterDrawer
+          open={drawerOpen}
+          setOpen={setDrawerOpen}
+          selectedCuisines={selectedCuisines}
+          setSelectedCuisines={setSelectedCuisines}
+          selectedMealTypes={selectedMealTypes}
+          setSelectedMealTypes={setSelectedMealTypes}
+          cuisineTypes={cuisineTypes}
+          mealTypes={mealTypes}
+          toggle={toggle}
+        />
+        <SortDrawer
+          open={sortOpen}
+          setOpen={setSortOpen}
+          sort={sort}
+          setSort={setSort}
+          sortOptions={sortOptions}
+        />
+
+        
+      
+  
+    {/* Divider */}
+    <div className="border-b border-gray-200 mb-6" />
+    {/* Recipe Grid */}
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+      {sorted.map((recipe) => (
+        <div
+          key={recipe.id}
+          style={{ position: "relative" }}
+          onClick={() => {
+            if (location.pathname === "/meals/add") {
+              setModalRecipe(recipe);
+            } else {
+              window.location.href = `/recipes/${recipe.id}`;
+            }
+          }}
+          className="cursor-pointer"
         >
-          <span className="material-icons text-base">sort</span>
-        </button>
-        {/* Filters button triggers Drawer on mobile */}
-        <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-          <DrawerTrigger asChild>
-            <button
-              className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-sm border border-gray-200 md:hidden transition-colors ${
-                drawerOpen ? "ring-2 ring-blue-400" : ""
-              }`}
-              aria-label={drawerOpen ? "Hide filters" : "Show filters"}
-              type="button"
-            >
-              <span className="material-icons text-base">filter_list</span>
-            </button>
-          </DrawerTrigger>
-          <DrawerContent className="p-4 bg-white shadow-xl border border-gray-200">
-            <div className="flex justify-between items-center mb-4">
-              <span className="font-semibold text-lg">Filters</span>
-              <DrawerClose asChild>
-                <button
-                  className="text-gray-500 hover:text-gray-800"
-                  aria-label="Close filters"
-                >
-                  <span className="material-icons">close</span>
-                </button>
-              </DrawerClose>
-            </div>
-            {/* SortSelect inside Drawer */}
-            <div className="flex flex-col gap-1">
-              <span className="text-gray-700 font-medium">Sort</span>
-              <SortSelect
-                value={sort}
-                onChange={setSort}
-                options={sortOptions}
-              />
-            </div>
-            {/* Filter Bar inside Drawer */}
-            <div className="flex flex-col gap-4 mt-2">
-              <ToggleFilter
-                options={cuisineTypes}
-                selected={selectedCuisines}
-                onToggle={(cuisine) =>
-                  setSelectedCuisines(toggle(selectedCuisines, cuisine))
-                }
-                color="blue"
-                label="Cuisine"
-              />
-              <ToggleFilter
-                options={mealTypes}
-                selected={selectedMealTypes}
-                onToggle={(mealType) =>
-                  setSelectedMealTypes(toggle(selectedMealTypes, mealType))
-                }
-                color="green"
-                label="Meal Type"
-              />
-              {/* Placeholder for Rating filter */}
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-700 font-medium">Rating</span>
-                <div className="h-10 bg-gray-100 rounded flex items-center justify-center text-gray-400">
-                  (Rating filter coming soon)
-                </div>
-              </div>
-              {/* Placeholder for Popularity filter */}
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-700 font-medium">Popularity</span>
-                <div className="h-10 bg-gray-100 rounded flex items-center justify-center text-gray-400">
-                  (Popularity filter coming soon)
-                </div>
-              </div>
-              {/* Placeholder for Tags filter */}
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-700 font-medium">Tags</span>
-                <div className="h-10 bg-gray-100 rounded flex items-center justify-center text-gray-400">
-                  (Tags filter coming soon)
-                </div>
-              </div>
-            </div>
-          </DrawerContent>
-        </Drawer>
-      </div>
-      {/* Sort Dropdown */}
-      <div
-        className={`transition-all duration-300 ${
-          sortOpen
-            ? "max-h-20 opacity-100 mb-2"
-            : "max-h-0 opacity-0 overflow-hidden mb-0"
-        }`}
-      >
-        <SortSelect value={sort} onChange={setSort} options={sortOptions} />
-      </div>
-      {/* Filter Bar (desktop only) */}
-      <div
-        className={`bg-white/80 rounded-xl shadow p-4 mb-6 flex flex-col md:flex-row md:items-end gap-4 border border-gray-100 backdrop-blur-sm transition-all duration-300 hidden md:flex`}
-      >
-        <div className="flex-1 flex flex-col gap-2 md:flex-row md:gap-4">
-          <ToggleFilter
-            options={cuisineTypes}
-            selected={selectedCuisines}
-            onToggle={(cuisine) =>
-              setSelectedCuisines(toggle(selectedCuisines, cuisine))
-            }
-            color="blue"
-            label="Cuisine"
-          />
-          <ToggleFilter
-            options={mealTypes}
-            selected={selectedMealTypes}
-            onToggle={(mealType) =>
-              setSelectedMealTypes(toggle(selectedMealTypes, mealType))
-            }
-            color="green"
-            label="Meal Type"
+          <RecipeCard
+            id={recipe.id.toString()}
+            image={recipe.image}
+            title={recipe.title}
+            description={recipe.description}
+            calories={recipe.calories}
           />
         </div>
-      </div>
-      {/* Divider */}
-      <div className="border-b border-gray-200 mb-6" />
-      {/* Recipe Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
-        {sorted.map((recipe) => (
-          <div
-            key={recipe.id}
-            style={{ position: "relative" }}
-            onClick={() => {
-              if (location.pathname === "/meals/add") {
-                setModalRecipe(recipe);
-              } else {
-                window.location.href = `/recipes/${recipe.id}`;
-              }
-            }}
-            className="cursor-pointer"
-          >
-            <RecipeCard
-              id={recipe.id.toString()}
-              image={recipe.image}
-              title={recipe.title}
-              description={recipe.description}
-              calories={recipe.calories}
-            />
-          </div>
-        ))}
-      </div>
-      {modalRecipe && (
-        <RecipeModal
-          recipe={modalRecipe}
-          onClose={() => setModalRecipe(null)}
-        />
-      )}
+      ))}
     </div>
-  );
+    {modalRecipe && (
+      <RecipeModal
+        recipe={modalRecipe}
+        onClose={() => setModalRecipe(null)}
+      />
+    )}
+  </div>
+  </div>)
 };
 
 export default AllRecipesFilter;

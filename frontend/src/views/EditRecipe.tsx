@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const EditRecipe = () => {
   const { id } = useParams();
@@ -144,150 +147,154 @@ const EditRecipe = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="max-w-xl w-full mx-auto p-4 sm:p-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Recipe Title</span>
-          <input
-            className="border rounded px-3 py-2"
+          <Input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            className="w-full"
           />
         </label>
 
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Description</span>
-          <textarea
-            className="border rounded px-3 py-2"
+          <Textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            className="w-full"
           />
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Cuisine</span>
-          <input
-            className="border rounded px-3 py-2"
+          <Input
             type="text"
             value={cuisine}
             onChange={(e) => setCuisine(e.target.value)}
+            className="w-full"
           />
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Meal Type</span>
-          <input
-            className="border rounded px-3 py-2"
+          <Input
             type="text"
             value={mealType}
             onChange={(e) => setMealType(e.target.value)}
+            className="w-full"
           />
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Tags (comma separated)</span>
-          <input
-            className="border rounded px-3 py-2"
+          <Input
             type="text"
             value={tags.join(", ")}
             onChange={handleTagsChange}
+            className="w-full"
           />
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Calories</span>
-          <input
-            className="border rounded px-3 py-2"
+          <Input
             type="number"
             value={calories}
             onChange={(e) => setCalories(e.target.value)}
+            className="w-full"
           />
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Image URL</span>
-          <input
-            className="border rounded px-3 py-2"
+          <Input
             type="url"
             value={image}
             onChange={(e) => setImage(e.target.value)}
+            className="w-full"
           />
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Instructions</span>
           {instructions.map((ins, idx) => (
             <div key={idx} className="flex gap-2 mb-1">
-              <input
-                className="border rounded px-3 py-2 flex-1"
+              <Input
                 type="text"
                 value={ins}
                 onChange={(e) => handleInstructionChange(idx, e.target.value)}
                 placeholder={`Step ${idx + 1}`}
+                className="w-full"
               />
             </div>
           ))}
-          <button
+          <Button
             type="button"
-            className="mt-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs self-start"
+            variant="secondary"
+            size="sm"
+            className="mt-1 self-start"
             onClick={addInstruction}
           >
             + Add Instruction
-          </button>
+          </Button>
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Ingredients</span>
           {ingredients.map((ing, idx) => (
             <div key={idx} className="flex gap-2 mb-1">
-              <input
-                className="border rounded px-3 py-2 flex-1"
+              <Input
                 type="text"
                 value={ing.name}
                 onChange={(e) =>
                   handleIngredientChange(idx, "name", e.target.value)
                 }
                 placeholder="Name"
+                className="w-full"
               />
-              <input
-                className="border rounded px-3 py-2 w-24"
+              <Input
                 type="text"
                 value={ing.amount}
                 onChange={(e) =>
                   handleIngredientChange(idx, "amount", e.target.value)
                 }
                 placeholder="Amount"
+                className="w-full sm:w-24"
               />
             </div>
           ))}
-          <button
+          <Button
             type="button"
-            className="mt-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs self-start"
+            variant="secondary"
+            size="sm"
+            className="mt-1 self-start"
             onClick={addIngredient}
           >
             + Add Ingredient
-          </button>
+          </Button>
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Notes</span>
-          <textarea
-            className="border rounded px-3 py-2"
+          <Textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
+            className="w-full"
           />
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-semibold">Rating</span>
-          <input
-            className="border rounded px-3 py-2 w-24"
+          <Input
             type="number"
             min="1"
             max="5"
             value={rating}
             onChange={(e) => setRating(e.target.value)}
+            className="w-full sm:w-24"
           />
         </label>
-        <button
+        <Button
           type="submit"
-          className="bg-blue-600 text-white rounded px-4 py-2 font-semibold hover:bg-blue-700 transition"
+          className="w-full sm:w-auto mt-2"
         >
           Save Recipe
-        </button>
+        </Button>
       </form>
     </div>
   );

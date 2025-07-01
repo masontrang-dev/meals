@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const ViewRecipe = () => {
   const { id } = useParams();
@@ -33,13 +35,7 @@ const ViewRecipe = () => {
 
   return (
     <div className="max-w-xl mx-auto p-6">
-      {/* Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-4 px-4 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold"
-      >
-        &larr; Back
-      </button>
+
       {data.image && (
         <img
           src={data.image}
@@ -67,11 +63,15 @@ const ViewRecipe = () => {
         </div>
       )}
       {data.tags && data.tags.length > 0 && (
-        <div className="mb-2">
-          <span className="font-semibold">Tags: </span>
-          <span>{data.tags.join(", ")}</span>
-        </div>
-      )}
+  <div className="mb-2">
+    <span className="font-semibold mr-2">Tags:</span>
+    <span className="flex flex-wrap gap-1">
+      {data.tags.map((tag: string, idx: number) => (
+        <Badge key={idx} variant="secondary">{tag}</Badge>
+      ))}
+    </span>
+  </div>
+)}
       {data.ingredients && data.ingredients.length > 0 && (
         <div className="mb-2">
           <span className="font-semibold">Ingredients:</span>
@@ -121,12 +121,11 @@ const ViewRecipe = () => {
           <span>{new Date(data.dateAdded).toLocaleDateString()}</span>
         </div>
       )}
-      <button
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-semibold"
+      <Button 
         onClick={() => navigate(`/recipes/${id}/edit`)}
       >
         Edit Recipe
-      </button>
+      </Button>
     </div>
   );
 };
