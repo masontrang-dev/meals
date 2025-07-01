@@ -8,7 +8,7 @@ export default function HeaderNav() {
   const { jumpToToday } = useMealsNav();
 
   const showBack = location.pathname !== "/" && location.pathname !== "/recipes" && location.pathname !== "/meals";
-  const isRecipes = location.pathname.startsWith("/recipes");
+  const isRecipes = location.pathname === "/recipes";
   const isMeals = location.pathname === "/meals";
 
   return (
@@ -34,10 +34,12 @@ export default function HeaderNav() {
       )}
 
       {isRecipes && (
+        <div className="flex-1 flex justify-end">
         <RectAddMealButton
           onClick={() => navigate("/recipes/add")}
-          label="Add Recipe"
+          label="Add Recipe" 
         />
+        </div>
       )}
     </div>
   );

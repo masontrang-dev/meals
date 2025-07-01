@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import RecipeModal from "./RecipeModal";
 import FilterDrawer from "./FilterDrawer";
 import SortDrawer from "./SortDrawer";
+import { Search } from "lucide-react";
 
 export interface Recipe {
   ingredients: [{name: string, amount: string}];
@@ -92,11 +93,17 @@ const AllRecipesFilter: React.FC = () => {
         className="flex items-center gap-2 mb-2"
         onSubmit={(e) => e.preventDefault()}
       >
-        <SearchInput
-          value={search}
-          onChange={setSearch}
-          placeholder="Search recipes..."
-        />
+        <div className="relative w-full">
+    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
+    <input
+      type="search"
+      className="bg-transparent border-input text-primary placeholder:text-muted-foreground shadow-md rounded-md px-12 py-2 w-full outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[1px] disabled:cursor-not-allowed disabled:opacity-50"
+      value={search}
+      onChange={setSearch}
+      placeholder="Search recipes..."
+
+    />
+  </div>
       </form>
       {/* Toggle Bar */}
       <div className="flex flex-wrap gap-2 justify-start mb-2">

@@ -1,5 +1,6 @@
 import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
+import { SlidersHorizontal } from "lucide-react";
 import React from "react";
 
 interface FilterDrawerProps {
@@ -70,7 +71,7 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({
         type="button"
         variant="secondary"
       >
-        <span>Filters</span>
+        <SlidersHorizontal className="h-5 w-5" />
       </Button>
     </DrawerTrigger>
     <DrawerContent className="flex flex-col h-[80vh] bg-white shadow-xl border border-gray-200">
