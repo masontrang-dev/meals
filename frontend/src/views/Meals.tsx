@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MealCard from "../components/MealCard";
 import RectAddMealButton from "../components/RectAddMealButton";
+import DateSelector from "../components/DateSelector";
 
 interface Meal {
   id: string;
@@ -86,31 +87,6 @@ const Meals = () => {
 
   return (
     <div className="p-4 sm:p-6">
-      <h1 className="text-2xl font-bold mb-6">Meal Planner</h1>
-      <div className="flex justify-center gap-4 mb-6">
-        <button
-          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
-          onClick={handlePrev}
-          aria-label="Previous Day"
-        >
-          &uarr; Previous
-        </button>
-        <button
-          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
-          onClick={() => setCenterDate(new Date())}
-          aria-label="Today"
-          disabled={centerDate.toDateString() === new Date().toDateString()}
-        >
-          Today
-        </button>
-        <button
-          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
-          onClick={handleNext}
-          aria-label="Next Day"
-        >
-          Next &darr;
-        </button>
-      </div>
       {loading ? (
         <div>Loading meals...</div>
       ) : error ? (
@@ -170,6 +146,22 @@ const Meals = () => {
           })}
         </div>
       )}
+      <div
+        className="fixed bottom-0 left-0 w-full flex justify-center z-50 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(255,255,255,0.95) 80%, transparent)",
+        }}
+      >
+        <div className="pointer-events-auto pb-2 mb-2">
+          <DateSelector
+            centerDate={centerDate}
+            setCenterDate={setCenterDate}
+            handlePrev={handlePrev}
+            handleNext={handleNext}
+          />
+        </div>
+      </div>
     </div>
   );
 };
