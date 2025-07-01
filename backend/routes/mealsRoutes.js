@@ -1,7 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { getMeals } = require("../controllers/mealsController");
+const {
+  getMeals,
+  addMeal,
+  getMealById,
+} = require("../controllers/mealsController");
 
 router.get("/", getMeals);
+router.get("/:id", getMealById);
+router.post("/add", addMeal);
 
 module.exports = router;

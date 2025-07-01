@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface MealCardProps {
+interface RecipeCardProps {
   id: string;
   image: string;
   title: string;
@@ -19,7 +19,7 @@ const isTouchDevice = () => {
   );
 };
 
-const MealCard: React.FC<MealCardProps> = ({
+const RecipeCard: React.FC<RecipeCardProps> = ({
   id,
   image,
   title,
@@ -45,14 +45,19 @@ const MealCard: React.FC<MealCardProps> = ({
     }
   }, [expanded, touch]);
 
-  // Always navigate to ViewMeal on click
   const handleCardClick = () => {
-    navigate(`/meals/${id}`);
+    if (touch) {
+      if (!expanded) {
+        setExpanded(true);
+      } else {
+        navigate(`/recipes/${id}`);
+      }
+    }
   };
 
   const handleViewDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate(`/meals/${id}`);
+    navigate(`/recipes/${id}`);
   };
 
   return (
@@ -71,13 +76,15 @@ const MealCard: React.FC<MealCardProps> = ({
       role="button"
       aria-label={`View details for ${title}`}
     >
-      <img
-        src={image}
-        alt={title}
-        className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${
-          expanded ? "brightness-75" : ""
-        }`}
-      />
+      {image && (
+        <img
+          src={image}
+          alt={title}
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-200 ${
+            expanded ? "brightness-75" : ""
+          }`}
+        />
+      )}
       {/* Always show title at the bottom, even when not expanded */}
       <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white px-2 py-1 rounded-b-xl text-sm font-semibold truncate">
         {title}
@@ -107,4 +114,4 @@ const MealCard: React.FC<MealCardProps> = ({
   );
 };
 
-export default MealCard;
+export default RecipeCard;

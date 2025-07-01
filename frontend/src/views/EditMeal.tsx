@@ -1,5 +1,5 @@
 const EditMeal = () => {
-  return <></>;
+  return <div>EDIT MEAL</div>;
 };
 
 export default EditMeal;
